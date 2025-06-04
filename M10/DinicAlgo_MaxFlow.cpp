@@ -87,7 +87,7 @@ struct DinicMaxFlow {
         return (distance[sinkNode] != -1);
     }
 
-    int augmentPath(int currentNode, int targetSink, int currentFlow, vector<int> &nextEdgeIndex) {
+    ll augmentPath(int currentNode, int targetSink, int currentFlow, vector<int> &nextEdgeIndex) {
         if(currentNode == targetSink) return currentFlow;
 
         for(; nextEdgeIndex[currentNode] < (int)adjacencyList[currentNode].size(); nextEdgeIndex[currentNode]++) {
@@ -99,19 +99,19 @@ struct DinicMaxFlow {
                     neighbor.flow += flow;
                     Edge &reverseEdge = adjacencyList[neighbor.destination][neighbor.reverseEdgeIndex];
                     reverseEdge.flow -= flow;
-                    return flow;
+                    return flow * 1LL;
                 }
             }
         }
-        return 0;
+        return 0LL;
     }
 
-    int computeMaxFlow() {
-        int totalFlow = 0;
+    ll computeMaxFlow() {
+        ll totalFlow = 0LL;
         while(buildLevelGraph()) {
             while(true) {
                 vector<int> nextEdgeIndex(numNodes, 0);
-                int flow = augmentPath(sourceNode, sinkNode, maxCapacity, nextEdgeIndex);
+                ll flow = augmentPath(sourceNode, sinkNode, maxCapacity, nextEdgeIndex);
                 if(flow == 0) break;
                 totalFlow += flow;
             }
@@ -126,7 +126,7 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    freopen(TASK".inp", "r", stdin);
+//    freopen(TASK".inp", "r", stdin);
 
     cin >> numNodes >> numEdges;
     sourceNode = 1;
@@ -139,7 +139,7 @@ int main() {
         dinic.addDirectedEdge(fromNode, toNode, edgeCapacity);
     }
 
-    int maxFlow = dinic.computeMaxFlow();
+    ll maxFlow = dinic.computeMaxFlow();
 
     vector<tuple<int, int, int>> usedEdges;
 
